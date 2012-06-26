@@ -24,10 +24,11 @@
 
 ;;; Commentary:
 
-;; right-justify shifts all lines to the right, to the right-most character
-;; found in the region.  May untabify as a part of the process.
+;; Command `right-justify' shifts all lines to the right, to the
+;; right-most character found in the region.  May untabify as a
+;; part of the process.
 
-(require 'untabify)
+(require 'tabify)
 
 ;;; Code:
 
@@ -41,12 +42,10 @@
              (goto-char start)
              (end-of-line)
              (while (< (point) end)
-               (if (> (current-column) maxval)
-                   (setq maxval (current-column)))
-               (end-of-line 2)
-               )
+               (when (> (current-column) maxval)
+		 (setq maxval (current-column)))
+               (end-of-line 2))
              maxval)))
-
       (goto-char start)
       (end-of-line)
       (while (< (point) (marker-position end-mark))
@@ -57,7 +56,7 @@
           (untabify (point) line-end) ;; Undo tabs in text
           (if (> need-indent 0)
               (insert (make-string need-indent ? ))))
-        (end-of-line 2)
-        ))))
+        (end-of-line 2)))))
 
+(provide 'rightjustify)
 ;;; rightjustify.el ends here
